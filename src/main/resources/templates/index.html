@@ -1,0 +1,192 @@
+<html>
+	<head>
+		<html xmlns="http://www.w3.org/1999/xhtml" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="./css/style.css" type="text/css" />
+		<link rel="stylesheet" href="./css/angular-datepicker.css" type="text/css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.min.js"></script>
+    	<script src="./js/application.js"></script>
+    	<script src="./js/controllerFamily.js"></script>
+		<script src="./js/angular-datepicker.js"></script>
+		<title>i Rodzinka</title>
+	</head>
+	
+	<body ng-app="iFamily" ng-controller="FamilyController">
+		<div class="tlo" ng-hide="panelLogin">
+		<div class="kontener">
+		
+			<div class="panelLeft">
+			
+				<div class="title">
+					<div class="logo"></div>
+					<div class="napis_logo">iRodzinka</div>
+				</div>
+			
+				<div class="rodzinka">
+					<div class="menu" id="uzytkownik_grupa">Twoja Rodzina:</div>
+					<div class="menu" id="uzytkownik_grupa">{{irodzina}}</div>
+				</div>
+				
+				<div class="rodzinka">	
+					<div id="uzytkownik_grupa" class="uzytkownik" ng-click="selectUser('all','all')"
+						ng-class="{ 'uzytkownik_selected': selectedUserIndex == 'all' }" >
+					  	- Wszyscy
+					</div>
+					
+					<div ng-repeat="uzytkownik in users" >
+					  <div class="uzytkownik" ng-click="selectUser(uzytkownik,$index)" ng-class="{ 'uzytkownik_selected': $index == selectedUserIndex }" >
+					  	- {{uzytkownik.imie}}
+					  </div>
+					</div>
+					
+				</div>	
+					
+				<div class="rodzinka rozjazd">
+					<div class="menu" id="uzytkownik_grupa">Filtry</div>
+					<div class="filters">
+						<input id="check" type="checkbox" ng-model="Check.kup" ng-init="Check.kup=false"></input>
+							<label for="check"> Ukryj zakończone zakupy</label>	
+						</div>
+					<div class="filters"> Wybór kategorii: 
+						<select
+							ng-model="selectedKate"
+							ng-options="kat as kat for kat in kategorieW" >	
+						</select>
+					</div>	
+				</div>
+				
+				<div class="rodzinka rozjazd">
+					<div class="menu" id="uzytkownik_grupa">Ustawienia</div>
+					<div class="uzytkownik" ng-click="logOff()">wyloguj</div>
+					<div class="uzytkownik" ng-click="addUserWindow()">Dodaj osobę</div>
+					<div class="uzytkownik" ng-click="deleteUser()">Usuń osobę</div>
+				</div>
+				
+			</div>	
+			
+			<div class="panelRight"><div class="panelRightInside">
+			
+				<div class="lista_title">Nasza lista zakupów</div>
+				
+				<div class="lista">
+				
+					<div class="item_bar">
+						<div class="mid">DATA</div>
+						<div class="lon">OPIS</div>
+						<div class="kropa"></div>
+						<div class="sho">ILE</div>						
+						<div class="mid">KTO</div>
+						<div class="mid">STATUS</div>
+					</div>
+					
+					<div class="item_bar">
+						<div class="item add" ng-click="edycjaOkno(null)">DODAJ ZAKUP DO LISTY</div>
+					</div>
+					
+					<div class="pagination" ng-click="showPast()">Pokaż zakupy z wcześniejszego tygodnia (widoczne zakupy od:{{dateStart}})</div>
+					<div class="item_bar" 
+						ng-repeat="lista in zakupy | filter: filterFunction | orderBy:'kiedy' "  
+						ng-style="listaStyle(lista)" >
+							<div class="mid" ng-style="{'font-weight':(lista.kiedy==today?'bold':'normal')}" >{{lista.kiedy}}</div>
+							<div class="lon" ng-style= "{'text-decoration':(lista.stan=='kup'?'none':'line-through')}">{{lista.opis}}</div>
+							<div class="kropa" ng-style="kategoriaStyle(lista)"></div>
+							<div class="sho">{{lista.ilosc}}</div>						
+							<div class="mid">{{lista.imie}}</div>
+							<div class="item mid" ng-click="stan(lista)">{{lista.stan}}</div>
+							<div class="item mid" ng-click="edycjaOkno(lista)">EDYCJA</div>
+							<div class="item sho" ng-click="usun(lista)">X</div>
+					</div>
+					
+				</div>
+			
+			</div></div>
+
+			<div class="panelEdit" ng-show="panelEdit">
+					<div class="panelEdit_title" >Panel edycji</div>
+					<div class="edycja_buttons">
+						<div class="center">		
+							<div class="mid">DATA</div>
+							<div class="lon">OPIS</div>
+							<div class="sho">ILE</div>						
+							<div class="mid">KTO</div>
+							<div class="mid">KATEGORIA</div>
+							<div class="sho"></div>
+						</div>
+						<div class="center">
+							<div class="mid picker">		 
+								<datepicker date-format="{{'yyyy-MM-dd'}}" date-set="{{edycja.kiedy}}" >
+									 <input ng-model="edycja.kiedy" ng-readonly="true"  type="text" size="10" maxlength="10"/>
+								</datepicker>
+							</div>
+							<div class="lon"><input type="text" size="60" maxlength="40" ng-model="edycja.opis" /></div>
+							<div class="sho"><input type="text" size="3" maxlength="4" ng-model="edycja.ilosc" /></div>
+							<div class="mid">
+								<select
+									ng-model="edycja.imie" 
+									ng-options="uzytkownik.imie for uzytkownik in users" >
+								</select>
+							</div>	
+							<div class="mid">
+								<select
+									ng-model="edycja.kategoria" 
+									ng-options="kat as kat for kat in kategorie" >
+								</select>
+							</div>	
+							<div class="sho"></div>
+						</div>
+					</div>	
+					<div class="edycja_buttons">	
+						<button ng-click="cofnij()">ANULUJ</button>
+						<button ng-click="zapisz()">ZAPISZ</button>
+					</div>	
+			</div>				
+			
+			<div class="panelUser" ng-show="panelUser">
+				<div class="panelEdit_title" >Podaj imię nowego użytkownika</div>
+				<div class="edycja_buttons">
+					<input type="text" size="30" maxlength="20" ng-model="newUser.imie" />
+				</div>
+				<div class="edycja_buttons">	
+					<button ng-click="addUser(false)">ANULUJ</button>
+					<button ng-click="addUser(true)">ZAPISZ</button>
+				</div>	
+			</div>	
+							
+		</div>
+		</div>
+		
+		<div class="tlo2" ng-show="panelLogin">	
+		
+			<div class="panelLogin" >	
+				<div class="naglowek">
+					<div class="logo"></div>
+					<div class="napis_naglowek">iRodzinka</div>
+				</div>
+				<div class="panelEdit_title" >Zaloguj się do swojej rodziny:</div>
+				<form>
+					<div class="edycja_buttons">
+						<div class="mid">Login</div>
+						<div class="mid">
+							<input type="text" size="15" maxlength="15" ng-model="family.login" />
+						</div>
+						<div class="mid"></div>
+					</div>
+					<div class="edycja_buttons">
+						<div class="mid">Hasło</div>
+						<div class="mid">
+							<input type="password" size="15" maxlength="15" ng-model="family.pass" />
+						</div>
+						<div class="mid"></div>
+					</div>
+					<div class="edycja_buttons">	
+						<button ng-click="login()">ZALOGUJ</button>
+					</div>	
+				</form>
+			</div>	
+		</div>
+		
+	</body>
+	
+</html>
+
