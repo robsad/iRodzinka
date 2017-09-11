@@ -2,6 +2,9 @@
 
 REST application made with SpringBoot, AngularJS, mySQL
 
+![App view](http://robertsadlowski.pl/app/iFamily/3.jpg)
+
+
 You must setup your mySQL database:
 
 CREATE DATABASE zakupy;
