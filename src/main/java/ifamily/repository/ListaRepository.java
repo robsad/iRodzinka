@@ -1,4 +1,6 @@
-package controller;
+package ifamily.repository;
+
+import ifamily.entities.Lista;
 
 import java.util.Date;
 import java.util.List;

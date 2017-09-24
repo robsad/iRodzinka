@@ -1,4 +1,4 @@
-package controller;
+package ifamily.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;

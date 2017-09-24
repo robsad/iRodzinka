@@ -1,6 +1,10 @@
 package integracyjne;
 
 import static org.junit.Assert.assertEquals;
+import ifamily.entities.Grupa;
+import ifamily.entities.Lista;
+import ifamily.entities.Uzytkownik;
+
 import org.junit.Test;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -8,9 +12,6 @@ import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import controller.Grupa;
-import controller.Lista;
-import controller.Uzytkownik;
 
 
 public class DatabaseTest{

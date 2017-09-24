@@ -1,4 +1,6 @@
-package controller;
+package ifamily.repository;
+
+import ifamily.entities.Grupa;
 
 import java.util.List;
 

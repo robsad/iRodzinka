@@ -1,4 +1,8 @@
-package controller;
+package ifamily;
+
+import ifamily.entities.Grupa;
+import ifamily.entities.Lista;
+import ifamily.entities.Uzytkownik;
 
 import org.springframework.boot.autoconfigure.data.rest.SpringBootRepositoryRestMvcConfiguration;
 import org.springframework.context.annotation.Configuration;
