@@ -1,11 +1,12 @@
 # iRodzinka
 
-REST application made with SpringBoot, AngularJS, mySQL
+SpringBoot REST application for family shopping management (mySQL as database, frontend with AngularJS)
 
 ![App view](http://robertsadlowski.pl/app/iFamily/3.jpg)
 
 
-You must setup your mySQL database:
+
+Setup mySQL database:
 
 CREATE DATABASE zakupy;
 
